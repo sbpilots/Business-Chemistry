@@ -11,13 +11,13 @@
     <div>
         <label for="userInput">Ask your question:</label>
         <input type="text" id="userInput" placeholder="Type your question here">
-        <button onclick="startConversation()">Submit</button>
+        <button onclick="startConversation()">Submit</button> <!-- Button triggering startConversation() -->
     </div>
 
     <div id="responseOutput"></div>
 
     <script>
-        const apiKey = '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'; // Replace with your OpenAI API key
+        const apiKey = 'your_openai_api_key'; // Replace with your OpenAI API key
         let assistantId = 'asst_olXVByEhdTCdHFmPHnlSodVI'; // Your custom assistant ID
         let threadId = null; // This will store the thread ID
 
@@ -77,34 +77,37 @@
         }
 
         // Step 4: Get the AI response (Updated with error handling)
-async function getAIResponse() {
-    console.log('Fetching AI response...'); // Log step
-    const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'OpenAI-Beta': 'assistants=v1'
+        async function getAIResponse() {
+            console.log('Fetching AI response...'); // Log step
+            const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'OpenAI-Beta': 'assistants=v1'
+                }
+            });
+
+            const data = await response.json();
+            console.log('AI response fetched:', data); // Log AI response
+
+            // Check if messages array exists and has content
+            if (data && data.messages && data.messages.length > 0) {
+                return data.messages[data.messages.length - 1].content; // Get the last message in the thread
+            } else {
+                throw new Error('No messages found or invalid response format');
+            }
         }
-    });
-
-    const data = await response.json();
-    console.log('Full API Response:', data); // Log full API response to inspect
-
-    // Check if messages array exists and has content
-    if (data && data.messages && data.messages.length > 0) {
-        return data.messages[data.messages.length - 1].content; // Get the last message in the thread
-    } else {
-        console.error('API Response Format:', JSON.stringify(data, null, 2)); // Log the actual format
-        throw new Error('No messages found or invalid response format');
-    }
-}
-
 
         // Full conversation flow: Create thread, append message, create run, and get response
         async function startConversation() {
+            console.log('Button clicked!'); // Log when the button is clicked
             const userInput = document.getElementById('userInput').value;
             const responseOutput = document.getElementById('responseOutput');
-            console.log('User input:', userInput); // Log user input
+
+            if (!userInput) {
+                responseOutput.innerText = 'Please enter a question.';
+                return;
+            }
 
             try {
                 if (!threadId) {
@@ -114,7 +117,6 @@ async function getAIResponse() {
                 await createRun(); // Create a run to process the message
                 const assistantResponse = await getAIResponse(); // Fetch assistant's response
 
-                console.log('Assistant response:', assistantResponse); // Log assistant response
                 responseOutput.innerText = assistantResponse;
             } catch (error) {
                 console.error('Error during conversation flow:', error); // Log error
