@@ -59,7 +59,7 @@
             return data;
         }
 
-        // Step 3: Create a run to get the assistant's response
+        // Step 3: Create a run to get the assistant's response using the assistant ID
         async function createRun() {
             console.log('Creating run...'); // Log step
             const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
