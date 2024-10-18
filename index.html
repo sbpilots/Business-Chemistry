@@ -19,7 +19,7 @@
     <script>
         const apiKey = 'sk-ei7SXJlpPla9GQZdF3xivyfH9u3mJiY3cAqj9XmhkzT3BlbkFJbOiaQh_i4AEYOSSswQzmywXFV7zY48ePuhjOv2bJMA'; // Replace with your OpenAI API key
 
-        // Step 1: Create a run to get the assistant's response (using Chat Completions API)
+        // Function to make a call to the Chat Completions API (GPT-4)
         async function createRun(userInput) {
             console.log('Creating run...'); // Log step
             const response = await fetch(`https://api.openai.com/v1/chat/completions`, {
@@ -41,7 +41,7 @@
             return data;
         }
 
-        // Full conversation flow: Create run, and get response
+        // Full conversation flow: Create run, and display the response
         async function startConversation() {
             console.log('Button clicked!'); // Log when the button is clicked
             const userInput = document.getElementById('userInput').value;
