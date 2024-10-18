@@ -20,17 +20,17 @@
         async function startConversation() {
             const userInput = document.getElementById('userInput').value;
             const responseOutput = document.getElementById('responseOutput');
-            const assistantId = 'asst_eZ8yFqsMID8axC6G4By4xn76'; // Your assistant ID
+            const assistantId = 'asst_eZ8yFqsMID8axC6G4By4xn76'; // Make sure this is the correct Assistant ID
 
             try {
-                const response = await fetch('https://openai-backend-ltux.onrender.com/api/chat', { // Use your correct Render URL
+                const response = await fetch('https://openai-backend-ltux.onrender.com/api/chat', { // Ensure this URL is correct
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         message: userInput,
-                        assistant: assistantId // Updated key from assistantId to assistant
+                        assistant: assistantId // Make sure 'assistant' is the key
                     })
                 });
 
